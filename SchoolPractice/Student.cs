@@ -27,24 +27,65 @@ namespace SchoolPractice
             nextStudentId++;
         }
 
-        // TODO: Complete the AddGrade method.
         public void AddGrade(int courseCredits, double grade)
         {
-            // Update the appropriate properties: NumberOfCredits, Gpa
+            double totalQualityScore = this.Gpa * NumberOfCredits;
+            totalQualityScore += courseCredits * grade;
+            this.NumberOfCredits += courseCredits;
+            this.Gpa = totalQualityScore / NumberOfCredits;
         }
-
-        //TODO: Complete the GetGradeLevel method here:
         public string GetGradeLevel(int credits)
         {
-            // Determine the grade level of the student based on NumberOfCredits
-            return "grade level tbd";
+            if (credits <= 29)
+            {
+                return "Freshman";
+            }
+            else if (credits <= 59)
+            {
+                return "Sophomore";
+            }
+            else if (credits <= 89)
+            {
+                return "Junior";
+            }
+            else if (credits >= 90)
+            {
+                return "Senior";
+            }
+            else
+            {
+                return "Invalid number of credits.";
+            }
         }
 
-        // TODO: Add your custom 'ToString' method here. Make sure it returns a well-formatted string rather
-        //  than just the class fields.
+        public override string ToString()
+        {
+            return ($"{Name} (Credits: {NumberOfCredits}, GPA: {Gpa:0.0})\nGrade Level: {GetGradeLevel(NumberOfCredits)}");
+        }
 
-        // TODO: Add your custom 'Equals' method here. Consider which fields should match in order to call two
-        //  Student objects equal.
 
+        public override bool Equals(object toBeCompared)
+        {
+            if (toBeCompared == this)
+            {
+                return true;
+            }
+            if (toBeCompared == null)
+            {
+                return false;
+            }
+            if (toBeCompared.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            Student s = toBeCompared as Student;
+            return (s.StudentId == StudentId);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(StudentId);
+        }
     }
 }

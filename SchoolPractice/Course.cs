@@ -7,14 +7,34 @@ namespace SchoolPractice
     {
         public string Topic { get; set; }
         public Teacher Instructor { get; set; }
-        public List<Student> enrolledStudents { get; set; }
+        public List<Student> EnrolledStudents { get; set; }
 
+        public Course(string topic, Teacher instructor)
+        {
+            Topic = topic;
+            Instructor = instructor;
+            Student Cait = new Student("Cait");
+            Student Shea = new Student("Shea");
+            this.EnrolledStudents = new List<Student> { Cait, Shea };
+        }
 
-        // TODO: Add your custom 'ToString' method here. Make sure it returns a well-formatted string rather than
-        //  just the class fields.
+        public override string ToString()
+        {
+            string formattedStudentList = "";
+            foreach (Student student in EnrolledStudents) { formattedStudentList += student.Name + "\n"; }
+            return $"Course Topic: {Topic}\nInstructor: {Instructor.FirstName + " " +  Instructor.LastName}\nEnrolled Students:\n{formattedStudentList}";
+        }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Course course &&
+                   Topic == course.Topic &&
+                   EqualityComparer<Teacher>.Default.Equals(Instructor, course.Instructor);
+        }
 
-        // TODO: Add your custom 'Equals' method here. Consider which fields should match in order to call two
-        //  Course objects equal.
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Topic, Instructor);
+        }
     }
 }
